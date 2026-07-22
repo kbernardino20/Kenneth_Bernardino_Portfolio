@@ -10,11 +10,15 @@ Open `index.html` in a browser, or serve the folder with a local static server.
 - `work-samples/graphic-design.html`
 - `work-samples/data-entry.html`
 
-## Deployment
-The project can be deployed directly to Netlify, Vercel, GitHub Pages or Cloudflare Pages. Replace the canonical placeholder in `index.html` and `sitemap.xml` with the final domain before publishing.
+## Live Website
 
-## Placeholders
-The GitHub URL remains a placeholder because no verified profile URL was supplied.
+Portfolio:
+https://kenbernardino.com
+
+GitHub Repository:
+https://github.com/kbernardino20/kenneth-bernardino-portfolio
+
+Hosted using GitHub Pages with a custom domain.
 
 ## Mobile optimisation
 
