@@ -87,3 +87,27 @@ if(shots.length){
 }
 
 addEventListener('click',e=>{if(document.body.classList.contains('menu-open')&&!e.target.closest('.nav')&&!e.target.closest('#menu'))setMenuState(false)});
+
+
+// Copy WeChat username from contact links.
+const wechatLinks=[...document.querySelectorAll('[data-wechat]')];
+if(wechatLinks.length){
+  const toast=document.createElement('div');
+  toast.className='wechat-toast';
+  toast.setAttribute('role','status');
+  toast.setAttribute('aria-live','polite');
+  document.body.append(toast);
+  let toastTimer;
+  const notify=(message)=>{
+    toast.textContent=message;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>toast.classList.remove('show'),2400);
+  };
+  wechatLinks.forEach(link=>link.addEventListener('click',async e=>{
+    e.preventDefault();
+    const username=link.dataset.wechat||'@kenbernardino';
+    try{await navigator.clipboard.writeText(username);notify(`WeChat ${username} copied`)}
+    catch{notify(`WeChat: ${username}`)}
+  }));
+}
