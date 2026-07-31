@@ -929,6 +929,157 @@
     }
    }
 
+
+   /* Grouped, clickable About statistics */
+   #about .about-stats-grouped {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+   }
+
+   #about .about-stat-group {
+    position: relative;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    border: 1px solid rgba(112, 139, 180, .16);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+   }
+
+   #about .about-stat-group > div {
+    min-width: 0;
+   }
+
+   #about .about-stat-group:hover,
+   #about .about-stat-group:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(20, 124, 255, .38);
+    box-shadow: 0 14px 32px rgba(20, 124, 255, .11);
+    outline: none;
+   }
+
+   #about .about-stat-arrow {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    color: #147cff;
+    font-size: .95rem;
+    font-weight: 700;
+    opacity: 0;
+    transform: translate(-4px, 4px);
+    transition: opacity .2s ease, transform .2s ease;
+   }
+
+   #about .about-stat-group:hover .about-stat-arrow,
+   #about .about-stat-group:focus-visible .about-stat-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+   }
+
+   @media (max-width: 640px) {
+    #about .about-stat-group {
+     grid-template-columns: 1fr 1fr !important;
+    }
+   }
+
+
+   /* Expanded About Me section */
+   #about .about-grid {
+    grid-template-columns: minmax(0, 1.35fr) minmax(360px, .85fr) !important;
+    gap: 34px !important;
+    align-items: stretch !important;
+   }
+
+   #about .about-main {
+    padding-right: 12px;
+   }
+
+   #about .about-main h3 {
+    max-width: 760px;
+   }
+
+   #about .about-main p {
+    max-width: 780px;
+    line-height: 1.78 !important;
+   }
+
+   /* Animated border lines for clickable statistic groups */
+   #about .about-stat-group {
+    isolation: isolate;
+   }
+
+   #about .about-stat-group::before,
+   #about .about-stat-group::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, #147cff 20%, #147cff 80%, transparent);
+    opacity: 0;
+    transition: transform .28s ease, opacity .2s ease;
+   }
+
+   #about .about-stat-group::before {
+    top: 0;
+    left: 14px;
+    right: 14px;
+    height: 2px;
+    transform: scaleX(.15);
+    transform-origin: left center;
+   }
+
+   #about .about-stat-group::after {
+    bottom: 0;
+    left: 14px;
+    right: 14px;
+    height: 2px;
+    transform: scaleX(.15);
+    transform-origin: right center;
+   }
+
+   #about .about-stat-group:hover::before,
+   #about .about-stat-group:focus-visible::before,
+   #about .about-stat-group:hover::after,
+   #about .about-stat-group:focus-visible::after {
+    opacity: 1;
+    transform: scaleX(1);
+   }
+
+   #about .about-stat-group > div {
+    position: relative;
+   }
+
+   #about .about-stat-group > div + div::before {
+    content: "";
+    position: absolute;
+    top: 18px;
+    bottom: 18px;
+    left: -4px;
+    width: 1px;
+    background: rgba(112, 139, 180, .18);
+    transition: background .2s ease, box-shadow .2s ease;
+   }
+
+   #about .about-stat-group:hover > div + div::before,
+   #about .about-stat-group:focus-visible > div + div::before {
+    background: rgba(20, 124, 255, .55);
+    box-shadow: 0 0 12px rgba(20, 124, 255, .28);
+   }
+
+   @media (max-width: 980px) {
+    #about .about-grid {
+     grid-template-columns: 1fr !important;
+    }
+
+    #about .about-main {
+     padding-right: 0;
+    }
+   }
+
 </style>
 <script defer="" src="js/app.js">
 </script>
@@ -1269,40 +1420,33 @@
 <p>
        My recent studies and certifications strengthen that experience with cyber security, full-stack JavaScript, generative AI and SAP technology consulting fundamentals.
       </p>
+<p>
+       I enjoy turning complex requirements into practical solutions, whether that means building a new feature, improving an existing workflow, investigating a production issue or making a system easier to support. I bring a careful, collaborative approach to delivery and focus on creating software that works well for both users and the teams maintaining it.
+      </p>
 </article>
-<div class="about-stats reveal">
+<div class="about-stats reveal about-stats-grouped">
+<a aria-label="View experience section" class="about-stat-group" href="#experience">
 <div>
-<strong>
-        Enterprise
-       </strong>
-<span>
-        Software delivery
-       </span>
+<strong>Enterprise</strong>
+<span>Software delivery</span>
 </div>
 <div>
-<strong>
-        4
-       </strong>
-<span>
-        Enterprise roles
-       </span>
+<strong>4</strong>
+<span>Enterprise roles</span>
+</div>
+<span aria-hidden="true" class="about-stat-arrow">↗</span>
+</a>
+<a aria-label="View education and credentials section" class="about-stat-group" href="#credentials">
+<div>
+<strong>MIT</strong>
+<span>Cyber Security</span>
 </div>
 <div>
-<strong>
-        MIT
-       </strong>
-<span>
-        Cyber Security
-       </span>
+<strong>4</strong>
+<span>Recent credentials</span>
 </div>
-<div>
-<strong>
-        4
-       </strong>
-<span>
-        Recent credentials
-       </span>
-</div>
+<span aria-hidden="true" class="about-stat-arrow">↗</span>
+</a>
 </div>
 </div>
 </section>
@@ -1324,26 +1468,26 @@
 <div class="experience-list reveal">
 <button class="job active interactive-card" data-job="qbe">
 <span>
-        2022
+        Feb–Dec 2022
        </span>
-<img alt="" class="company-logo" src="assets/company-logos/qbe.svg"/>
+<img alt="" class="company-logo" src="assets/company-logos/qbe.png"/>
 <div>
 <strong>
          Senior Software Engineer
         </strong>
 <small>
-         QBE Group Shared Services Centre
+         QBE Insurance
         </small>
 </div>
 </button>
 <button class="job interactive-card" data-job="dxc2">
 <span>
-        2019–22
+        Aug 2019–Feb 2022
        </span>
-<img alt="" class="company-logo" src="assets/company-logos/dxc.svg"/>
+<img alt="" class="company-logo" src="assets/company-logos/dxc.png"/>
 <div>
 <strong>
-         Technology Consultant II
+         Information Technology Consultant II
         </strong>
 <small>
          DXC Technology
@@ -1352,12 +1496,12 @@
 </button>
 <button class="job interactive-card" data-job="fx">
 <span>
-        2018–19
+        Oct 2018–Jul 2019
        </span>
-<img alt="" class="company-logo" src="assets/company-logos/fuji-xerox.svg"/>
+<img alt="" class="company-logo" src="assets/company-logos/fuji-xerox.png"/>
 <div>
 <strong>
-         Systems Analyst
+         System Analyst
         </strong>
 <small>
          Fuji Xerox Singapore
@@ -1366,9 +1510,9 @@
 </button>
 <button class="job interactive-card" data-job="dxc1">
 <span>
-        2014–18
+        Aug 2014–Oct 2018
        </span>
-<img alt="" class="company-logo" src="assets/company-logos/dxc.svg"/>
+<img alt="" class="company-logo" src="assets/company-logos/dxc.png"/>
 <div>
 <strong>
          Programmer Analyst
@@ -1413,9 +1557,9 @@
        <span aria-hidden="true">↗</span>
       </span>
 </div>
-<strong>
-      MIT
-     </strong>
+<div class="education-logo-wrap" aria-hidden="true">
+<img alt="" class="education-logo" src="assets/company-logos/koi.png"/>
+</div>
 </div>
 <div class="certs">
 <a aria-haspopup="dialog" class="cert reveal interactive-card" data-cert-description="Completed a seven-course professional program covering SAP fundamentals, enterprise systems, customer discovery, business analysis, solution design, implementation planning, consulting communication and a hands-on case project." data-cert-provider="SAP · Jul 2026" data-cert-title="SAP Technology Consultant" data-cert-type="Professional Certificate · 7 courses" href="https://coursera.org/verify/professional-cert/H905I1UUWIO4" rel="noopener" target="_blank">

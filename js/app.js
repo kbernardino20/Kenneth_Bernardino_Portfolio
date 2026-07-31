@@ -31,7 +31,89 @@ links?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenuSt
 addEventListener('scroll',()=>{updateNavShadow();if(innerWidth<=900&&links?.classList.contains('open'))setMenuState(false)},{passive:true});
 addEventListener('keydown',e=>{if(e.key==='Escape')setMenuState(false)});
 addEventListener('resize',()=>{setMenuState(false);mountMobileMenu()});const progress=document.querySelector('#progress');addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;progress.style.width=`${h?scrollY/h*100:0}%`});const yearEl=document.querySelector('#year');if(yearEl)yearEl.textContent=new Date().getFullYear();const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('visible')),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>io.observe(el));const words=['Enterprise Applications','Full-Stack JavaScript','Application Support','Cyber Security','AI-Assisted Development'];let wi=0,ci=0,del=false;const typing=document.querySelector('#typing');function type(){if(!typing)return;const w=words[wi];typing.textContent=w.slice(0,ci);if(!del&&ci<w.length)ci++;else if(del&&ci>0)ci--;else{del=!del;if(!del)wi=(wi+1)%words.length}setTimeout(type,del?38:del===false&&ci===w.length?1100:72)}type();
-const jobs={qbe:{title:'Senior Software Engineer',company:'QBE Group Shared Services Centre',points:['Delivered enterprise communication and application enhancements across business-critical workflows.','Supported production issues, investigated root causes and coordinated fixes through controlled release processes.','Worked with analysts, testers and stakeholders in an Agile delivery environment.','Improved workflows and maintained clear technical documentation.'],tags:['Software Engineering','Production Support','System Analysis','Agile','Testing','Documentation','OpenText Exstream']},dxc2:{title:'Technology Consultant II',company:'DXC Technology',points:['Developed and supported enterprise output-generation solutions for a government housing environment.','Translated business requirements into technical designs, reusable components and validation rules.','Participated in testing, deployment preparation, issue resolution and stakeholder coordination.','Maintained delivery quality through documentation and structured review processes.'],tags:['Enterprise Applications','Application Support','Testing','SQL','Technical Design','OpenText Exstream']},fx:{title:'Systems Analyst',company:'Fuji Xerox Singapore',points:['Analysed application requirements and supported customer communication and document workflows.','Developed and maintained software components used in enterprise production environments.','Investigated defects, validated outputs and documented technical solutions.'],tags:['Systems Analysis','Software Development','Quality Assurance','Support','Documentation']},dxc1:{title:'Programmer Analyst',company:'DXC Technology',points:['Built and maintained application components from approved business and technical requirements.','Supported testing, defect resolution, release preparation and ongoing system maintenance.','Collaborated with delivery teams to provide reliable outputs and clear documentation.'],tags:['Programming','Application Development','Testing','Release Support','Documentation']}};const panel=document.querySelector('#job-panel');function renderJob(k){const j=jobs[k];if(!j||!panel)return;panel.innerHTML=`<span class="company">${j.company}</span><h3>${j.title}</h3><ul>${j.points.map(x=>`<li>${x}</li>`).join('')}</ul><div class="tag-row">${j.tags.map(x=>`<b>${x}</b>`).join('')}</div>`}const experienceGrid=document.querySelector('.experience-grid'),experienceList=document.querySelector('.experience-list');
+const jobs={
+qbe:{
+ title:'Senior Software Engineer',
+ company:'QBE Insurance',
+ dates:'Feb 2022 – Dec 2022',
+ logo:'assets/company-logos/qbe.png',
+ bannerClass:'qbe-banner',
+ points:[
+  'Led delivery of the BAU and Qnect insurance correspondence platforms, building dynamic templates and business-rule-driven logic for automated, personalised document generation at scale.',
+  'Implemented workflow optimisation and performance improvements, reducing turnaround time by approximately 20–30%.',
+  'Managed complex variable data processing supporting high-volume, personalised outputs across multiple insurance correspondence streams.',
+  'Collaborated with Business Analysts, QA, UAT and deployment teams, while participating in Agile Scrum ceremonies to support successful production releases.',
+  'Performed troubleshooting, root cause analysis and production support for enterprise systems.'
+ ],
+ tags:['OpenText Exstream','Enterprise Applications','Production Support','Root Cause Analysis','Agile Scrum','Testing']
+},
+dxc2:{
+ title:'Information Technology Consultant II',
+ company:'DXC Technology',
+ dates:'Aug 2019 – Feb 2022',
+ logo:'assets/company-logos/dxc.png',
+ bannerClass:'dxc-banner',
+ points:[
+  'Acted as the client-facing technical point of contact for enterprise accounts, conducting system analysis, configuration and platform implementation to meet business requirements.',
+  'Managed incidents and service requests within SLA targets, supporting enterprise applications used across multiple business units.',
+  'Supported release management, deployment validation and SDLC delivery across Agile environments, contributing to stable production releases and fewer post-deployment defects.',
+  'Developed technical documentation and knowledge base materials, and worked with cross-functional stakeholders to resolve production incidents and deliver service improvements.',
+  'Ensured compliance with IT governance, security policies and organisational standards.'
+ ],
+ tags:['System Analysis','Incident Management','SLA Support','Release Management','SDLC','IT Governance']
+},
+fx:{
+ title:'System Analyst',
+ company:'Fuji Xerox Singapore',
+ dates:'Oct 2018 – Jul 2019',
+ logo:'assets/company-logos/fuji-xerox.png',
+ bannerClass:'fx-banner',
+ points:[
+  'Supported output generation systems for Singapore’s Housing Development Board, producing high-volume, nationwide correspondence and document outputs.',
+  'Designed and implemented automated document workflows, performing system debugging, integration testing and validation to ensure accurate outputs.',
+  'Improved quality assurance and compliance controls within operational workflows.',
+  'Prepared technical specifications and documentation for system maintenance and knowledge transfer.'
+ ],
+ tags:['HDB Singapore','Output Generation','Workflow Automation','Integration Testing','Quality Assurance','Documentation']
+},
+dxc1:{
+ title:'Programmer Analyst',
+ company:'DXC Technology',
+ dates:'Aug 2014 – Oct 2018',
+ logo:'assets/company-logos/dxc.png',
+ bannerClass:'dxc-banner',
+ points:[
+  'Developed and maintained enterprise applications supporting business operations, and built automated batch processes and workflow automation to improve system efficiency.',
+  'Implemented bug fixes, enhancements and change requests across multiple releases, using Jira for task tracking and Agile project management.',
+  'Produced technical documentation and deployment support materials.',
+  'Provided production support and troubleshooting to maintain system availability.'
+ ],
+ tags:['Application Development','Batch Processing','Workflow Automation','Jira','Agile','Production Support']
+}
+};
+const panel=document.querySelector('#job-panel');function renderJob(k){
+ const j=jobs[k];
+ if(!j||!panel)return;
+ panel.innerHTML=`
+  <div class="job-company-banner ${j.bannerClass}">
+   <img src="${j.logo}" alt="${j.company} logo">
+   <div class="job-banner-copy">
+    <span>${j.company}</span>
+    <small>Enterprise software delivery</small>
+   </div>
+  </div>
+  <div class="job-panel-body">
+   <div class="job-panel-heading">
+    <div>
+     <span class="company">${j.company}</span>
+     <h3>${j.title}</h3>
+    </div>
+    <time>${j.dates}</time>
+   </div>
+   <ul>${j.points.map(x=>`<li>${x}</li>`).join('')}</ul>
+   <div class="tag-row">${j.tags.map(x=>`<b>${x}</b>`).join('')}</div>
+  </div>`;
+}const experienceGrid=document.querySelector('.experience-grid'),experienceList=document.querySelector('.experience-list');
 function placeExperiencePanel(){
   if(!panel||!experienceGrid||!experienceList)return;
   const active=document.querySelector('.job.active');

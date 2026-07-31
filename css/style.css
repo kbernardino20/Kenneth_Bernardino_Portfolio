@@ -2324,3 +2324,226 @@ body{padding-top:72px}
   .home-cinematic .hero-metrics > div:nth-child(even){padding:2px 0 !important}
   .home-cinematic .hero-metrics > div::before{display:none !important}
 }
+
+
+/* Experience company banners and detailed role panels */
+#experience .job-panel {
+  overflow: hidden !important;
+  padding: 0 !important;
+  border-radius: 24px !important;
+}
+
+#experience .job-company-banner {
+  position: relative;
+  min-height: 138px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 28px 34px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,.2);
+}
+
+#experience .job-company-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 86% 20%, rgba(255,255,255,.24), transparent 28%),
+    linear-gradient(115deg, rgba(255,255,255,.12), transparent 56%);
+  pointer-events: none;
+}
+
+#experience .job-company-banner img {
+  position: relative;
+  z-index: 1;
+  width: 118px;
+  height: 58px;
+  object-fit: contain;
+  object-position: left center;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 12px 28px rgba(2,12,32,.18);
+}
+
+#experience .job-banner-copy {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  color: #fff;
+}
+
+#experience .job-banner-copy span {
+  display: block;
+  font-size: clamp(1.25rem, 2vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+#experience .job-banner-copy small {
+  display: block;
+  margin-top: 7px;
+  color: rgba(255,255,255,.82);
+  font-weight: 600;
+}
+
+#experience .qbe-banner {
+  background: linear-gradient(135deg, #0d3e78, #1763ad 58%, #2a8ac8);
+}
+
+#experience .dxc-banner {
+  background: linear-gradient(135deg, #111827, #29364f 58%, #5a6a88);
+}
+
+#experience .fx-banner {
+  background: linear-gradient(135deg, #8a0c18, #c51c2b 58%, #e54949);
+}
+
+#experience .job-panel-body {
+  padding: 28px 32px 30px;
+}
+
+#experience .job-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+#experience .job-panel-heading h3 {
+  margin: 7px 0 0;
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  line-height: 1.18;
+}
+
+#experience .job-panel-heading time {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border: 1px solid rgba(112,139,180,.22);
+  border-radius: 999px;
+  color: var(--muted, #62708c);
+  background: rgba(247,249,252,.7);
+  font-size: .76rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+#experience .job-panel ul {
+  display: grid;
+  gap: 13px;
+  margin: 0;
+  padding-left: 21px;
+}
+
+#experience .job-panel li {
+  padding-left: 4px;
+  color: var(--muted, #62708c);
+  line-height: 1.68;
+}
+
+#experience .job-panel .tag-row {
+  margin-top: 26px;
+}
+
+#experience .experience-list .job > span {
+  width: 112px;
+  font-size: .68rem;
+  line-height: 1.35;
+}
+
+#experience .experience-list .job {
+  min-height: 92px;
+}
+
+[data-theme="dark"] #experience .job-panel-heading time,
+body.dark #experience .job-panel-heading time,
+.home-light.theme-dark #experience .job-panel-heading time {
+  background: rgba(255,255,255,.05);
+}
+
+@media (max-width: 760px) {
+  #experience .job-company-banner {
+    min-height: 120px;
+    padding: 24px;
+  }
+
+  #experience .job-company-banner img {
+    width: 96px;
+    height: 52px;
+  }
+
+  #experience .job-panel-body {
+    padding: 24px 22px 26px;
+  }
+
+  #experience .job-panel-heading {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  #experience .experience-list .job > span {
+    width: 92px;
+  }
+}
+
+@media (max-width: 520px) {
+  #experience .job-company-banner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  #experience .job-company-banner img {
+    width: 104px;
+  }
+}
+
+
+.company-logo,
+.job-company-banner img{
+  object-fit:contain!important;
+  background:#fff!important;
+  padding:12px!important;
+  border-radius:14px;
+}
+.education img,.school-logo{
+  object-fit:contain!important;
+}
+
+/* King's Own Institute logo in the MIT education card */
+#credentials .education-logo-wrap {
+  width: min(300px, 32vw);
+  min-width: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px 26px;
+  border-left: 1px solid rgba(112, 139, 180, .18);
+}
+
+#credentials .education-logo {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  max-height: 96px;
+  object-fit: contain;
+  object-position: center;
+  filter: none !important;
+}
+
+@media (max-width: 760px) {
+  #credentials .education-logo-wrap {
+    width: 100%;
+    min-width: 0;
+    padding: 20px;
+    border-left: 0;
+    border-top: 1px solid rgba(112, 139, 180, .18);
+  }
+
+  #credentials .education-logo {
+    max-width: 220px;
+    max-height: 84px;
+  }
+}
