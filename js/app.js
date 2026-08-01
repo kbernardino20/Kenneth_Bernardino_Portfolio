@@ -116,10 +116,7 @@ const panel=document.querySelector('#job-panel');function renderJob(k){
 }const experienceGrid=document.querySelector('.experience-grid'),experienceList=document.querySelector('.experience-list');
 function placeExperiencePanel(){
   if(!panel||!experienceGrid||!experienceList)return;
-  const active=document.querySelector('.job.active');
-  if(matchMedia('(max-width: 620px)').matches&&active){
-    active.insertAdjacentElement('afterend',panel);
-  }else if(panel.parentElement!==experienceGrid){
+  if(panel.parentElement!==experienceGrid){
     experienceGrid.append(panel);
   }
 }
@@ -193,3 +190,619 @@ if(wechatLinks.length){
     catch{notify(`WeChat: ${username}`)}
   }));
 }
+
+
+// Top hero photo banner carousel.
+const heroCarousel = document.querySelector('[data-hero-carousel]');
+if (heroCarousel) {
+  const heroSlides = [...heroCarousel.querySelectorAll('[data-hero-slide]')];
+  const heroDots = [...heroCarousel.querySelectorAll('[data-hero-dot]')];
+  const heroPrevious = heroCarousel.querySelector('[data-hero-prev]');
+  const heroNext = heroCarousel.querySelector('[data-hero-next]');
+  let heroIndex = 0;
+  let heroTimer;
+
+  const updateHeroCarousel = (nextIndex) => {
+    heroIndex = (nextIndex + heroSlides.length) % heroSlides.length;
+
+    heroSlides.forEach((slide, index) => {
+      slide.classList.remove('is-active', 'is-prev', 'is-next', 'is-hidden');
+
+      const previousIndex = (heroIndex - 1 + heroSlides.length) % heroSlides.length;
+      const nextSlideIndex = (heroIndex + 1) % heroSlides.length;
+
+      if (index === heroIndex) slide.classList.add('is-active');
+      else if (index === previousIndex) slide.classList.add('is-prev');
+      else if (index === nextSlideIndex) slide.classList.add('is-next');
+      else slide.classList.add('is-hidden');
+    });
+
+    heroDots.forEach((dot, index) => {
+      const active = index === heroIndex;
+      dot.classList.toggle('is-active', active);
+      dot.setAttribute('aria-selected', String(active));
+    });
+  };
+
+  const restartHeroTimer = () => {
+    clearInterval(heroTimer);
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      heroTimer = setInterval(() => updateHeroCarousel(heroIndex + 1), 6500);
+    }
+  };
+
+  heroPrevious?.addEventListener('click', () => {
+    updateHeroCarousel(heroIndex - 1);
+    restartHeroTimer();
+  });
+
+  heroNext?.addEventListener('click', () => {
+    updateHeroCarousel(heroIndex + 1);
+    restartHeroTimer();
+  });
+
+  heroDots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      updateHeroCarousel(index);
+      restartHeroTimer();
+    });
+  });
+
+  heroSlides.forEach((slide, index) => {
+    slide.addEventListener('click', () => {
+      if (index !== heroIndex) {
+        updateHeroCarousel(index);
+        restartHeroTimer();
+      }
+    });
+  });
+
+  heroCarousel.addEventListener('mouseenter', () => clearInterval(heroTimer));
+  heroCarousel.addEventListener('mouseleave', restartHeroTimer);
+
+  updateHeroCarousel(0);
+  restartHeroTimer();
+}
+
+// Work-sample gallery carousels.
+document.querySelectorAll('[data-gallery-carousel]').forEach((carousel) => {
+  const track = carousel.querySelector('.gallery-carousel-track');
+  const items = [...track.querySelectorAll('.shot')];
+  const previous = carousel.querySelector('.gallery-carousel-prev');
+  const next = carousel.querySelector('.gallery-carousel-next');
+  const dots = carousel.querySelector('.gallery-carousel-dots');
+
+  if (!track || !items.length || !dots) return;
+
+  const visibleCount = () => {
+    if (matchMedia('(max-width: 720px)').matches) return 1;
+    if (matchMedia('(max-width: 980px)').matches) return 2;
+    return 3;
+  };
+
+  const pageCount = () => Math.max(1, Math.ceil(items.length / visibleCount()));
+
+  const itemStep = () => {
+    const first = items[0];
+    const styles = getComputedStyle(track);
+    const gap = parseFloat(styles.columnGap || styles.gap || '0');
+    return first.getBoundingClientRect().width + gap;
+  };
+
+  const currentPage = () => {
+    const step = itemStep() * visibleCount();
+    return Math.max(0, Math.min(pageCount() - 1, Math.round(track.scrollLeft / step)));
+  };
+
+  const goToPage = (page) => {
+    const safePage = Math.max(0, Math.min(pageCount() - 1, page));
+    track.scrollTo({
+      left: itemStep() * visibleCount() * safePage,
+      behavior: 'smooth'
+    });
+  };
+
+  const renderDots = () => {
+    dots.innerHTML = '';
+    for (let i = 0; i < pageCount(); i += 1) {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `Go to gallery page ${i + 1}`);
+      dot.addEventListener('click', () => goToPage(i));
+      dots.append(dot);
+    }
+  };
+
+  const updateControls = () => {
+    const page = currentPage();
+    [...dots.querySelectorAll('button')].forEach((dot, index) => {
+      dot.classList.toggle('is-active', index === page);
+    });
+    if (previous) previous.disabled = page === 0;
+    if (next) next.disabled = page === pageCount() - 1;
+  };
+
+  previous?.addEventListener('click', () => goToPage(currentPage() - 1));
+  next?.addEventListener('click', () => goToPage(currentPage() + 1));
+
+  let dragging = false;
+  let startX = 0;
+  let startScroll = 0;
+
+  track.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    dragging = true;
+    startX = event.clientX;
+    startScroll = track.scrollLeft;
+    track.classList.add('is-dragging');
+    track.setPointerCapture?.(event.pointerId);
+  });
+
+  track.addEventListener('pointermove', (event) => {
+    if (!dragging) return;
+    track.scrollLeft = startScroll - (event.clientX - startX);
+  });
+
+  const stopDragging = (event) => {
+    if (!dragging) return;
+    dragging = false;
+    track.classList.remove('is-dragging');
+    track.releasePointerCapture?.(event.pointerId);
+    goToPage(currentPage());
+  };
+
+  track.addEventListener('pointerup', stopDragging);
+  track.addEventListener('pointercancel', stopDragging);
+  track.addEventListener('scroll', () => requestAnimationFrame(updateControls), { passive: true });
+
+  const refresh = () => {
+    renderDots();
+    updateControls();
+  };
+
+  addEventListener('resize', refresh);
+  refresh();
+});
+
+
+// Cinematic work-sample carousel and reliable image enlargement.
+document.querySelectorAll('[data-gallery-carousel]').forEach((carousel) => {
+  const track = carousel.querySelector('.gallery-carousel-track');
+  const items = [...track.querySelectorAll('.shot')];
+  const previous = carousel.querySelector('.gallery-carousel-prev');
+  const next = carousel.querySelector('.gallery-carousel-next');
+  const dots = carousel.querySelector('.gallery-carousel-dots');
+
+  if (!track || !items.length) return;
+
+  carousel.dataset.cinematicReady = 'true';
+  let activeIndex = 0;
+
+  const normalise = (index) => (index + items.length) % items.length;
+
+  const render = (index) => {
+    activeIndex = normalise(index);
+    const prevIndex = normalise(activeIndex - 1);
+    const nextIndex = normalise(activeIndex + 1);
+    const farPrevIndex = normalise(activeIndex - 2);
+    const farNextIndex = normalise(activeIndex + 2);
+
+    items.forEach((item, itemIndex) => {
+      item.classList.remove('is-active', 'is-prev', 'is-next', 'is-far-prev', 'is-far-next');
+      if (itemIndex === activeIndex) item.classList.add('is-active');
+      else if (itemIndex === prevIndex) item.classList.add('is-prev');
+      else if (itemIndex === nextIndex) item.classList.add('is-next');
+      else if (itemIndex === farPrevIndex) item.classList.add('is-far-prev');
+      else if (itemIndex === farNextIndex) item.classList.add('is-far-next');
+    });
+
+    if (dots) {
+      [...dots.querySelectorAll('button')].forEach((dot, dotIndex) => {
+        dot.classList.toggle('is-active', dotIndex === activeIndex);
+      });
+    }
+  };
+
+  if (dots) {
+    dots.innerHTML = '';
+    items.forEach((_, index) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `Show gallery item ${index + 1}`);
+      dot.addEventListener('click', (event) => {
+        event.stopPropagation();
+        render(index);
+      });
+      dots.append(dot);
+    });
+  }
+
+  previous?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    render(activeIndex - 1);
+  });
+
+  next?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    render(activeIndex + 1);
+  });
+
+  items.forEach((item, index) => {
+    item.addEventListener('click', (event) => {
+      if (!item.classList.contains('is-active')) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        render(index);
+      }
+    }, true);
+  });
+
+  let touchStartX = 0;
+  track.addEventListener('touchstart', (event) => {
+    touchStartX = event.touches[0]?.clientX || 0;
+  }, { passive: true });
+
+  track.addEventListener('touchend', (event) => {
+    const touchEndX = event.changedTouches[0]?.clientX || 0;
+    const distance = touchEndX - touchStartX;
+    if (Math.abs(distance) > 45) {
+      render(activeIndex + (distance < 0 ? 1 : -1));
+    }
+  }, { passive: true });
+
+  render(0);
+});
+
+// Ensure clicking an active gallery item always opens a large preview.
+document.querySelectorAll('.gallery-carousel-track .shot').forEach((shot) => {
+  shot.addEventListener('click', () => {
+    if (!shot.classList.contains('is-active')) return;
+
+    const sourceImage = shot.querySelector('img');
+    if (!sourceImage) return;
+
+    let modal = document.querySelector('.image-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.className = 'image-modal';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.innerHTML = `
+        <div class="image-modal-card">
+          <button class="image-modal-close" aria-label="Close preview">×</button>
+          <img alt="">
+          <div class="image-modal-caption"></div>
+        </div>`;
+      document.body.append(modal);
+    }
+
+    const modalImage = modal.querySelector('img');
+    const caption = modal.querySelector('.image-modal-caption');
+    modalImage.src = sourceImage.currentSrc || sourceImage.src;
+    modalImage.alt = sourceImage.alt || '';
+    caption.textContent = shot.querySelector('figcaption strong')?.textContent || '';
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    const closeModal = () => {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    };
+
+    modal.querySelector('.image-modal-close')?.addEventListener('click', closeModal, { once: true });
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    }, { once: true });
+
+    const escapeHandler = (event) => {
+      if (event.key === 'Escape') {
+        closeModal();
+        document.removeEventListener('keydown', escapeHandler);
+      }
+    };
+    document.addEventListener('keydown', escapeHandler);
+  });
+});
+
+
+// Final reliable click-to-enlarge handler for gallery images.
+(() => {
+  let modal = document.querySelector('.image-modal');
+
+  const ensureModal = () => {
+    if (modal) return modal;
+
+    modal = document.createElement('div');
+    modal.className = 'image-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Expanded gallery image');
+    modal.innerHTML = `
+      <div class="image-modal-card">
+        <button class="image-modal-close" type="button" aria-label="Close image preview">×</button>
+        <img alt="">
+        <div class="image-modal-caption"></div>
+      </div>`;
+    document.body.appendChild(modal);
+    return modal;
+  };
+
+  const closeModal = () => {
+    if (!modal) return;
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  document.addEventListener('click', (event) => {
+    const closeButton = event.target.closest('.image-modal-close');
+    if (closeButton) {
+      event.preventDefault();
+      closeModal();
+      return;
+    }
+
+    if (event.target === modal) {
+      closeModal();
+      return;
+    }
+
+    const shot = event.target.closest('.gallery-carousel-track .shot');
+    if (!shot || !shot.classList.contains('is-active')) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const sourceImage = shot.querySelector('img');
+    if (!sourceImage) return;
+
+    const activeModal = ensureModal();
+    const modalImage = activeModal.querySelector('img');
+    const caption = activeModal.querySelector('.image-modal-caption');
+
+    modalImage.src = sourceImage.currentSrc || sourceImage.src;
+    modalImage.alt = sourceImage.alt || '';
+    caption.textContent =
+      shot.querySelector('figcaption strong')?.textContent?.trim() || sourceImage.alt || '';
+
+    activeModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }, true);
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modal?.classList.contains('open')) {
+      closeModal();
+    }
+  });
+})();
+
+
+// Dedicated gallery lightbox for active carousel cards.
+document.addEventListener('DOMContentLoaded', () => {
+  const lightbox = document.querySelector('#galleryLightbox');
+  if (!lightbox) return;
+
+  const lightboxImage = lightbox.querySelector('#galleryLightboxImage');
+  const lightboxCaption = lightbox.querySelector('#galleryLightboxCaption');
+
+  const closeLightbox = () => {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('gallery-lightbox-open');
+    lightboxImage.src = '';
+  };
+
+  document.querySelectorAll('.gallery-carousel-track .shot').forEach((shot) => {
+    shot.addEventListener('click', (event) => {
+      if (!shot.classList.contains('is-active')) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      const source = shot.querySelector('img');
+      if (!source) return;
+
+      lightboxImage.src = source.currentSrc || source.src;
+      lightboxImage.alt = source.alt || '';
+      lightboxCaption.textContent =
+        shot.querySelector('figcaption strong')?.textContent?.trim() ||
+        source.alt ||
+        '';
+
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('gallery-lightbox-open');
+      lightbox.querySelector('.gallery-lightbox-close')?.focus();
+    }, true);
+  });
+
+  lightbox.querySelectorAll('[data-lightbox-close]').forEach((control) => {
+    control.addEventListener('click', closeLightbox);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && lightbox.classList.contains('is-open')) {
+      closeLightbox();
+    }
+  });
+});
+
+document.querySelectorAll('.badge-card-compact,.badge-card-premium,.featured-badge-image').forEach(el=>{
+ el.addEventListener('mousemove',e=>{
+   const r=el.getBoundingClientRect();
+   el.style.setProperty('--mx',(e.clientX-r.left)+'px');
+   el.style.setProperty('--my',(e.clientY-r.top)+'px');
+ });
+});
+
+
+// Global cursor-follow effect.
+(() => {
+  if (
+    matchMedia('(hover: none)').matches ||
+    matchMedia('(pointer: coarse)').matches ||
+    matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) return;
+
+  const glow = document.createElement('div');
+  glow.className = 'global-cursor-glow';
+
+  const dot = document.createElement('div');
+  dot.className = 'global-cursor-dot';
+
+  document.body.append(glow, dot);
+
+  let targetX = innerWidth / 2;
+  let targetY = innerHeight / 2;
+  let glowX = targetX;
+  let glowY = targetY;
+  let dotX = targetX;
+  let dotY = targetY;
+  let frameId = null;
+
+  const animate = () => {
+    dotX += (targetX - dotX) * 0.34;
+    dotY += (targetY - dotY) * 0.34;
+    glowX += (targetX - glowX) * 0.11;
+    glowY += (targetY - glowY) * 0.11;
+
+    dot.style.left = `${dotX}px`;
+    dot.style.top = `${dotY}px`;
+    glow.style.left = `${glowX}px`;
+    glow.style.top = `${glowY}px`;
+
+    frameId = requestAnimationFrame(animate);
+  };
+
+  const showCursor = () => {
+    document.body.classList.add('global-cursor-visible');
+  };
+
+  const hideCursor = () => {
+    document.body.classList.remove('global-cursor-visible');
+  };
+
+  document.addEventListener('mousemove', (event) => {
+    targetX = event.clientX;
+    targetY = event.clientY;
+    showCursor();
+  }, { passive: true });
+
+  document.addEventListener('mouseenter', showCursor);
+  document.addEventListener('mouseleave', hideCursor);
+
+  document.addEventListener('mouseover', (event) => {
+    const interactive = event.target.closest(
+      'a, button, [role="button"], input, select, textarea, .interactive-card, .project, .shot, .job, .cert, .badge-card'
+    );
+    document.body.classList.toggle('global-cursor-interactive', Boolean(interactive));
+  });
+
+  document.addEventListener('mouseout', (event) => {
+    if (!event.relatedTarget) {
+      document.body.classList.remove('global-cursor-interactive');
+      return;
+    }
+
+    const nextInteractive = event.relatedTarget.closest?.(
+      'a, button, [role="button"], input, select, textarea, .interactive-card, .project, .shot, .job, .cert, .badge-card'
+    );
+
+    if (!nextInteractive) {
+      document.body.classList.remove('global-cursor-interactive');
+    }
+  });
+
+  frameId = requestAnimationFrame(animate);
+
+  addEventListener('pagehide', () => {
+    if (frameId) cancelAnimationFrame(frameId);
+  });
+})();
+
+
+// Syntax-code cursor used throughout the website.
+(() => {
+  if (
+    matchMedia('(hover: none)').matches ||
+    matchMedia('(pointer: coarse)').matches ||
+    matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) return;
+
+  const cursor = document.createElement('div');
+  cursor.className = 'syntax-cursor';
+  cursor.setAttribute('aria-hidden', 'true');
+  document.body.append(cursor);
+
+  const trailSymbols = ['{ }', '()', '<>', '=>', '[]', 'const', 'let', '01'];
+  let symbolIndex = 0;
+  let targetX = innerWidth / 2;
+  let targetY = innerHeight / 2;
+  let cursorX = targetX;
+  let cursorY = targetY;
+  let lastTrailTime = 0;
+  let animationFrame = null;
+
+  const interactiveSelector =
+    'a, button, [role="button"], input, select, textarea, ' +
+    '.interactive-card, .project, .shot, .job, .cert, .badge-card';
+
+  const animate = () => {
+    cursorX += (targetX - cursorX) * 0.3;
+    cursorY += (targetY - cursorY) * 0.3;
+    cursor.style.left = `${cursorX + 14}px`;
+    cursor.style.top = `${cursorY + 14}px`;
+    animationFrame = requestAnimationFrame(animate);
+  };
+
+  const createTrail = (x, y) => {
+    const trail = document.createElement('span');
+    trail.className = 'syntax-trail';
+    trail.textContent = trailSymbols[symbolIndex % trailSymbols.length];
+    symbolIndex += 1;
+    trail.style.left = `${x}px`;
+    trail.style.top = `${y}px`;
+    document.body.append(trail);
+    trail.addEventListener('animationend', () => trail.remove(), { once: true });
+  };
+
+  document.addEventListener('mousemove', (event) => {
+    targetX = event.clientX;
+    targetY = event.clientY;
+    document.body.classList.add('syntax-cursor-visible');
+
+    const now = performance.now();
+    if (now - lastTrailTime > 110) {
+      createTrail(event.clientX, event.clientY);
+      lastTrailTime = now;
+    }
+  }, { passive: true });
+
+  document.addEventListener('mouseover', (event) => {
+    document.body.classList.toggle(
+      'syntax-cursor-interactive',
+      Boolean(event.target.closest(interactiveSelector))
+    );
+  });
+
+  document.addEventListener('mouseout', (event) => {
+    const nextInteractive = event.relatedTarget?.closest?.(interactiveSelector);
+    if (!nextInteractive) {
+      document.body.classList.remove('syntax-cursor-interactive');
+    }
+  });
+
+  document.addEventListener('mouseleave', () => {
+    document.body.classList.remove(
+      'syntax-cursor-visible',
+      'syntax-cursor-interactive'
+    );
+  });
+
+  animationFrame = requestAnimationFrame(animate);
+
+  addEventListener('pagehide', () => {
+    if (animationFrame) cancelAnimationFrame(animationFrame);
+  });
+})();
+

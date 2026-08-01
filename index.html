@@ -1246,16 +1246,29 @@
 </div>
 </div>
 </div>
-<div aria-label="Professional photo collage" class="hero-collage reveal">
-<figure class="collage-panel collage-one">
+<div aria-label="Professional photo banner carousel" class="hero-collage hero-banner-carousel reveal" data-hero-carousel>
+<div class="hero-banner-track">
+<figure class="collage-panel collage-one hero-banner-slide is-active" data-hero-slide>
 <img alt="Kenneth Bernardino overlooking Sydney Harbour Bridge" fetchpriority="high" src="assets/images/hero/harbour-portrait.webp"/>
 </figure>
-<figure class="collage-panel collage-two">
+<figure class="collage-panel collage-two hero-banner-slide" data-hero-slide>
 <img alt="Kenneth Bernardino in graduation attire" src="assets/images/hero/graduation-portrait.webp"/>
 </figure>
-<figure class="collage-panel collage-three">
+<figure class="collage-panel collage-three hero-banner-slide" data-hero-slide>
 <img alt="Kenneth Bernardino celebrating graduation in Sydney" src="assets/images/hero/graduation-city.webp"/>
 </figure>
+</div>
+<div aria-label="Photo carousel controls" class="hero-banner-controls">
+<div class="hero-banner-dots" role="tablist">
+<button aria-label="Show professional portrait" aria-selected="true" class="is-active" data-hero-dot type="button"></button>
+<button aria-label="Show graduation portrait" aria-selected="false" data-hero-dot type="button"></button>
+<button aria-label="Show graduation city portrait" aria-selected="false" data-hero-dot type="button"></button>
+</div>
+<div class="hero-banner-arrows">
+<button aria-label="Previous banner photo" data-hero-prev type="button">←</button>
+<button aria-label="Next banner photo" data-hero-next type="button">→</button>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -1632,64 +1645,66 @@
 </a>
 </div>
 
-<div class="badges-block reveal">
-<div class="badges-heading">
+
+
+<div class="badges-block badges-compact reveal">
+<div class="badges-heading badges-compact-heading">
 <div>
 <span>Verified digital credentials</span>
 <h3>Badges acquired</h3>
+<p>Verified credentials in software development, source control, generative AI and SAP.</p>
 </div>
 <a href="https://www.credly.com/users/kennethbernardino/badges/credly" rel="noopener" target="_blank">
-See more on Credly <span aria-hidden="true">↗</span>
+View all on Credly <span aria-hidden="true">↗</span>
 </a>
 </div>
-<div class="badges-grid">
 
-<button class="badge-card reveal" data-badge-index="0" type="button">
+<div class="badges-grid badges-grid-compact">
+<button class="badge-card badge-card-compact reveal" data-badge-index="0" type="button">
 <img alt="JavaScript Programming Essentials badge" loading="lazy" src="assets/badges/javascript-programming-essentials.png"/>
 <div>
-<span>IBM Developer Skills Network · Coursera</span>
 <h3>JavaScript Programming Essentials</h3>
-<small>View badge details <span aria-hidden="true">↗</span></small>
+<span>IBM</span>
 </div>
 </button>
-<button class="badge-card reveal" data-badge-index="1" type="button">
+
+<button class="badge-card badge-card-compact reveal" data-badge-index="1" type="button">
 <img alt="SAP Technology Consultant badge" loading="lazy" src="assets/badges/sap-technology-consultant.png"/>
 <div>
-<span>SAP · Coursera</span>
 <h3>SAP Technology Consultant</h3>
-<small>View badge details <span aria-hidden="true">↗</span></small>
+<span>SAP</span>
 </div>
 </button>
-<button class="badge-card reveal" data-badge-index="2" type="button">
+
+<button class="badge-card badge-card-compact reveal" data-badge-index="2" type="button">
 <img alt="Front-end Development with React V2 badge" loading="lazy" src="assets/badges/front-end-development-react-v2.png"/>
 <div>
-<span>IBM Developer Skills Network · Coursera</span>
 <h3>Front-end Development with React V2</h3>
-<small>View badge details <span aria-hidden="true">↗</span></small>
+<span>IBM</span>
 </div>
 </button>
-<button class="badge-card reveal" data-badge-index="3" type="button">
+
+<button class="badge-card badge-card-compact reveal" data-badge-index="3" type="button">
 <img alt="Git and GitHub Essentials badge" loading="lazy" src="assets/badges/git-github-essentials.png"/>
 <div>
-<span>IBM Developer Skills Network · Coursera</span>
 <h3>Git and GitHub Essentials</h3>
-<small>View badge details <span aria-hidden="true">↗</span></small>
+<span>IBM</span>
 </div>
 </button>
-<button class="badge-card reveal" data-badge-index="4" type="button">
+
+<button class="badge-card badge-card-compact reveal" data-badge-index="4" type="button">
 <img alt="JavaScript Full Stack Capstone Project badge" loading="lazy" src="assets/badges/javascript-full-stack-capstone.png"/>
 <div>
-<span>IBM Developer Skills Network · Coursera</span>
 <h3>JavaScript Full Stack Capstone Project</h3>
-<small>View badge details <span aria-hidden="true">↗</span></small>
+<span>IBM</span>
 </div>
 </button>
-<button class="badge-card reveal" data-badge-index="5" type="button">
+
+<button class="badge-card badge-card-compact reveal" data-badge-index="5" type="button">
 <img alt="Generative AI: Prompt Engineering badge" loading="lazy" src="assets/badges/generative-ai-prompt-engineering.png"/>
 <div>
-<span>IBM Developer Skills Network · Coursera</span>
 <h3>Generative AI: Prompt Engineering</h3>
-<small>View badge details <span aria-hidden="true">↗</span></small>
+<span>IBM</span>
 </div>
 </button>
 </div>
@@ -2069,6 +2084,7 @@ See more on Credly <span aria-hidden="true">↗</span>
 <h3 id="badgeModalTitle"></h3>
 <p class="badge-modal-type" id="badgeModalType"></p>
 <p class="badge-modal-description" id="badgeModalDescription"></p>
+<div class="badge-modal-skills" id="badgeModalSkills" aria-label="Skills demonstrated"></div>
 <div class="badge-modal-actions">
 <a class="badge-modal-credly" href="https://www.credly.com/users/kennethbernardino/badges/credly" rel="noopener" target="_blank">
 See more on Credly <span aria-hidden="true">↗</span>
@@ -2245,7 +2261,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
- const badgeData = [{"title": "JavaScript Programming Essentials", "provider": "IBM Developer Skills Network · Coursera", "type": "Digital Credential", "image": "assets/badges/javascript-programming-essentials.png", "description": "Covers core JavaScript concepts, syntax, variables, functions, objects, arrays, control flow and practical programming foundations."}, {"title": "SAP Technology Consultant", "provider": "SAP · Coursera", "type": "Professional Certificate Badge", "image": "assets/badges/sap-technology-consultant.png", "description": "Recognises completion of the SAP Technology Consultant professional certificate, covering SAP fundamentals, enterprise systems, solution design, implementation and consulting delivery."}, {"title": "Front-end Development with React V2", "provider": "IBM Developer Skills Network · Coursera", "type": "Digital Credential", "image": "assets/badges/front-end-development-react-v2.png", "description": "Demonstrates front-end development skills using React, reusable components, props, state, hooks, event handling and modern user-interface development."}, {"title": "Git and GitHub Essentials", "provider": "IBM Developer Skills Network · Coursera", "type": "Digital Credential", "image": "assets/badges/git-github-essentials.png", "description": "Covers Git version control, repositories, branching, merging, collaboration workflows, pull requests and practical GitHub usage."}, {"title": "JavaScript Full Stack Capstone Project", "provider": "IBM Developer Skills Network · Coursera", "type": "Digital Credential", "image": "assets/badges/javascript-full-stack-capstone.png", "description": "Recognises completion of a practical full-stack JavaScript capstone project involving front-end development, back-end services, APIs, data handling and application delivery."}, {"title": "Generative AI: Prompt Engineering", "provider": "IBM Developer Skills Network · Coursera", "type": "Digital Credential", "image": "assets/badges/generative-ai-prompt-engineering.png", "description": "Covers prompt engineering techniques, prompt patterns, refinement strategies, responsible AI usage and practical interaction with generative AI tools."}];
+ const badgeData = [
+{"title":"JavaScript Programming Essentials","provider":"IBM Developer Skills Network · Coursera","type":"Digital Credential","image":"assets/badges/javascript-programming-essentials.png","description":"Covers core JavaScript concepts, syntax, variables, functions, objects, arrays, control flow and practical programming foundations.","skills":["JavaScript","Functions","Objects","Arrays","Control Flow"]},
+{"title":"SAP Technology Consultant","provider":"SAP","type":"Professional Certificate Badge","image":"assets/badges/sap-technology-consultant.png","description":"Recognises completion of the SAP Technology Consultant professional certificate, covering SAP fundamentals, enterprise systems, solution design, implementation and consulting delivery.","skills":["SAP","Enterprise Systems","Solution Design","Implementation","Consulting"]},
+{"title":"Front-end Development with React V2","provider":"IBM Developer Skills Network · Coursera","type":"Digital Credential","image":"assets/badges/front-end-development-react-v2.png","description":"Demonstrates front-end development skills using React, reusable components, props, state, hooks, event handling and modern user-interface development.","skills":["React","Components","Props","State","Hooks"]},
+{"title":"Git and GitHub Essentials","provider":"IBM Developer Skills Network · Coursera","type":"Digital Credential","image":"assets/badges/git-github-essentials.png","description":"Covers Git version control, repositories, branching, merging, collaboration workflows, pull requests and practical GitHub usage.","skills":["Git","GitHub","Branching","Merging","Pull Requests"]},
+{"title":"JavaScript Full Stack Capstone Project","provider":"IBM Developer Skills Network · Coursera","type":"Digital Credential","image":"assets/badges/javascript-full-stack-capstone.png","description":"Recognises completion of a practical full-stack JavaScript capstone project involving front-end development, back-end services, APIs, data handling and application delivery.","skills":["Full-Stack JavaScript","Front End","Back End","REST APIs","Application Delivery"]},
+{"title":"Generative AI: Prompt Engineering","provider":"IBM Developer Skills Network · Coursera","type":"Digital Credential","image":"assets/badges/generative-ai-prompt-engineering.png","description":"Covers prompt engineering techniques, prompt patterns, refinement strategies, responsible AI usage and practical interaction with generative AI tools.","skills":["Prompt Engineering","Prompt Patterns","Generative AI","Responsible AI","AI Tools"]}
+];
  const modal = document.querySelector('#badgeModal');
  const dialog = modal?.querySelector('.badge-modal-dialog');
  const image = document.querySelector('#badgeModalImage');
@@ -2253,6 +2276,7 @@ document.addEventListener('DOMContentLoaded', () => {
  const title = document.querySelector('#badgeModalTitle');
  const type = document.querySelector('#badgeModalType');
  const description = document.querySelector('#badgeModalDescription');
+ const skills = document.querySelector('#badgeModalSkills');
  let previousFocus = null;
 
  const openBadge = (index) => {
@@ -2266,6 +2290,7 @@ document.addEventListener('DOMContentLoaded', () => {
   title.textContent = badge.title;
   type.textContent = badge.type;
   description.textContent = badge.description;
+  if (skills) skills.innerHTML = (badge.skills || []).map(skill => `<span>${skill}</span>`).join('');
 
   modal.hidden = false;
   document.body.classList.add('badge-modal-open');
