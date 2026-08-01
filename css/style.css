@@ -5071,3 +5071,188 @@ body.dark.syntax-cursor-interactive .syntax-cursor::before,
   background: rgba(8,20,39,.9) !important;
   color: #78b8ff !important;
 }
+
+/* === Compact case metadata bar: unified subpage layout === */
+.case-page-redesign .case-intro.case-intro-redesign{
+  display:block;
+  width:100%;
+  margin:0;
+  padding:0;
+  background:transparent;
+  border-top:1px solid #e2e8f0;
+  border-bottom:1px solid #e2e8f0;
+  border-radius:0;
+  box-shadow:none;
+  overflow:visible;
+}
+
+.case-page-redesign .case-intro.case-intro-redesign .case-meta.case-meta-redesign{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  align-items:stretch;
+  gap:0;
+  width:100%;
+  margin:0;
+  padding:0;
+  background:transparent;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+}
+
+.case-page-redesign .case-intro.case-intro-redesign .case-meta-item{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:flex-start;
+  gap:12px;
+  min-width:0;
+  min-height:0;
+  margin:0;
+  padding:18px 24px;
+  background:transparent;
+  border:0;
+  border-right:1px solid #e2e8f0;
+  border-radius:0;
+  box-shadow:none;
+  transform:none;
+}
+
+.case-page-redesign .case-intro.case-intro-redesign .case-meta-item:first-child{
+  padding-left:0;
+}
+
+.case-page-redesign .case-intro.case-intro-redesign .case-meta-item:last-child{
+  padding-right:0;
+  border-right:0;
+}
+
+.case-page-redesign .case-intro.case-intro-redesign .case-meta-item > i{
+  position:static;
+  flex:0 0 24px;
+  width:24px;
+  height:auto;
+  margin:0;
+  padding:0;
+  color:#2563eb;
+  background:transparent;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  font-size:18px;
+  line-height:1;
+  text-align:center;
+  transform:none;
+}
+
+.case-page-redesign .case-intro.case-intro-redesign .case-meta-content{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:2px;
+  min-width:0;
+  margin:0;
+  padding:0;
+  background:transparent;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+}
+
+.case-page-redesign .case-intro.case-intro-redesign .case-meta-content strong{
+  display:block;
+  margin:0;
+  padding:0;
+  color:#111827;
+  font-family:Inter,sans-serif;
+  font-size:13px;
+  font-weight:700;
+  line-height:1.2;
+  letter-spacing:0;
+  text-transform:none;
+}
+
+.case-page-redesign .case-intro.case-intro-redesign .case-meta-content span{
+  display:block;
+  margin:0;
+  padding:0;
+  color:#7b8794;
+  font-family:Inter,sans-serif;
+  font-size:9px;
+  font-weight:500;
+  line-height:1.25;
+  letter-spacing:0;
+  text-transform:none;
+}
+
+.case-page-redesign.theme-dark .case-intro.case-intro-redesign{
+  border-color:rgba(255,255,255,.12);
+}
+
+.case-page-redesign.theme-dark .case-intro.case-intro-redesign .case-meta-item{
+  border-color:rgba(255,255,255,.12);
+}
+
+.case-page-redesign.theme-dark .case-intro.case-intro-redesign .case-meta-content strong{
+  color:#f8fafc;
+}
+
+.case-page-redesign.theme-dark .case-intro.case-intro-redesign .case-meta-content span{
+  color:#94a3b8;
+}
+
+@media(max-width:900px){
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta.case-meta-redesign{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta-item{
+    padding:16px 18px;
+    border-bottom:1px solid #e2e8f0;
+  }
+
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta-item:nth-child(2){
+    border-right:0;
+  }
+
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta-item:nth-child(3),
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta-item:nth-child(4){
+    border-bottom:0;
+  }
+
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta-item:first-child{
+    padding-left:18px;
+  }
+
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta-item:last-child{
+    padding-right:18px;
+  }
+}
+
+@media(max-width:560px){
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta.case-meta-redesign{
+    display:flex;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta.case-meta-redesign::-webkit-scrollbar{
+    display:none;
+  }
+
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta-item,
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta-item:first-child,
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta-item:last-child{
+    flex:0 0 225px;
+    padding:16px 18px;
+    border-right:1px solid #e2e8f0;
+    border-bottom:0;
+  }
+
+  .case-page-redesign .case-intro.case-intro-redesign .case-meta-item:last-child{
+    border-right:0;
+  }
+}
+/* === End compact case metadata bar === */
